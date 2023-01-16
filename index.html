@@ -1,0 +1,403 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    body {
+      display: flex;
+      flex-direction: column;
+    }
+
+    svg {
+      background-color: black;
+    }
+
+    circle {
+      fill: white;
+    }
+
+    line {
+      stroke: white;
+      stroke-width: 8;
+      stroke-linecap: round;
+    }
+
+    text {
+      fill: red;
+      translate: -4px 4px;
+    }
+  </style>
+  <script type="module">
+
+
+    // Points
+    const point1start = { x: 100, y: 16 };
+    const point2start = { x: 100, y: 40 };
+    const point3start = { x: 80, y: 80 };
+    const point4start = { x: 120, y: 80 };
+    const point5start = { x: 100, y: 104 }
+    const point6start = { x: 80, y: 104 }
+    const point7start = { x: 120, y: 104 }
+    const point8start = { x: 80, y: 124 }
+    const point9start = { x: 120, y: 124 }
+    const point10start = { x: 80, y: 160 }
+    const point11start = { x: 120, y: 160 }
+
+    // SVG parts
+    const head = document.querySelector('#head')
+    const neck = document.querySelector('#neck')
+    const body = document.querySelector('#body')
+    const leftUpperArm = document.querySelector('#left-upper-arm')
+    const rightUpperArm = document.querySelector('#right-upper-arm')
+    const leftLowerArm = document.querySelector('#left-lower-arm')
+    const rightLowerArm = document.querySelector('#right-lower-arm')
+    const leftUpperLeg = document.querySelector('#left-upper-leg')
+    const rightUpperLeg = document.querySelector('#right-upper-leg')
+    const leftLowerLeg = document.querySelector('#left-lower-leg')
+    const rightLowerLeg = document.querySelector('#right-lower-leg')
+    const text1 = document.querySelector('#text-1')
+    const text2 = document.querySelector('#text-2')
+    const text3 = document.querySelector('#text-3')
+    const text4 = document.querySelector('#text-4')
+    const text5 = document.querySelector('#text-5')
+    const text6 = document.querySelector('#text-6')
+    const text7 = document.querySelector('#text-7')
+    const text8 = document.querySelector('#text-8')
+    const text9 = document.querySelector('#text-9')
+    const text10 = document.querySelector('#text-10')
+    const text11 = document.querySelector('#text-11')
+
+    // Inputs
+    const x1start = document.querySelector('#x-1-start')
+    const y1start = document.querySelector('#y-1-start')
+    const x2start = document.querySelector('#x-2-start')
+    const y2start = document.querySelector('#y-2-start')
+    const x3start = document.querySelector('#x-3-start')
+    const y3start = document.querySelector('#y-3-start')
+    const x4start = document.querySelector('#x-4-start')
+    const y4start = document.querySelector('#y-4-start')
+    const x5start = document.querySelector('#x-5-start')
+    const y5start = document.querySelector('#y-5-start')
+    const x6start = document.querySelector('#x-6-start')
+    const y6start = document.querySelector('#y-6-start')
+    const x7start = document.querySelector('#x-7-start')
+    const y7start = document.querySelector('#y-7-start')
+    const x8start = document.querySelector('#x-8-start')
+    const y8start = document.querySelector('#y-8-start')
+    const x9start = document.querySelector('#x-9-start')
+    const y9start = document.querySelector('#y-9-start')
+    const x10start = document.querySelector('#x-10-start')
+    const y10start = document.querySelector('#y-10-start')
+    const x11start = document.querySelector('#x-11-start')
+    const y11start = document.querySelector('#y-11-start')
+
+    // Initialize values
+    x1start.setAttribute('value', point1start.x)
+    y1start.setAttribute('value', point1start.y)
+    head.setAttribute('cx', point1start.x)
+    head.setAttribute('cy', point1start.y)
+    neck.setAttribute('x1', point1start.x)
+    neck.setAttribute('y1', point1start.y)
+    text1.setAttribute('x', point1start.x)
+    text1.setAttribute('y', point1start.y)
+
+    x2start.setAttribute('value', point2start.x)
+    y2start.setAttribute('value', point2start.y)
+    neck.setAttribute('x2', point2start.x)
+    neck.setAttribute('y2', point2start.y)
+    body.setAttribute('x1', point2start.x)
+    body.setAttribute('y1', point2start.y)
+    leftUpperArm.setAttribute('x1', point2start.x)
+    leftUpperArm.setAttribute('y1', point2start.y)
+    rightUpperArm.setAttribute('x1', point2start.x)
+    rightUpperArm.setAttribute('y1', point2start.y)
+    text2.setAttribute('x', point2start.x)
+    text2.setAttribute('y', point2start.y)
+
+    x3start.setAttribute('value', point3start.x)
+    y3start.setAttribute('value', point3start.y)
+    leftUpperArm.setAttribute('x2', point3start.x)
+    leftUpperArm.setAttribute('y2', point3start.y)
+    leftLowerArm.setAttribute('x1', point3start.x)
+    leftLowerArm.setAttribute('y1', point3start.y)
+    text3.setAttribute('x', point3start.x)
+    text3.setAttribute('y', point3start.y)
+
+    x4start.setAttribute('value', point4start.x)
+    y4start.setAttribute('value', point4start.y)
+    rightUpperArm.setAttribute('x2', point4start.x)
+    rightUpperArm.setAttribute('y2', point4start.y)
+    rightLowerArm.setAttribute('x1', point4start.x)
+    rightLowerArm.setAttribute('y1', point4start.y)
+    text4.setAttribute('x', point4start.x)
+    text4.setAttribute('y', point4start.y)
+
+    x5start.setAttribute('value', point5start.x)
+    y5start.setAttribute('value', point5start.y)
+    body.setAttribute('x2', point5start.x)
+    body.setAttribute('y2', point5start.y)
+    leftUpperLeg.setAttribute('x1', point5start.x)
+    leftUpperLeg.setAttribute('y1', point5start.y)
+    rightUpperLeg.setAttribute('x1', point5start.x)
+    rightUpperLeg.setAttribute('y1', point5start.y)
+    text5.setAttribute('x', point5start.x)
+    text5.setAttribute('y', point5start.y)
+
+    x6start.setAttribute('value', point6start.x)
+    y6start.setAttribute('value', point6start.y)
+    leftLowerArm.setAttribute('x2', point6start.x)
+    leftLowerArm.setAttribute('y2', point6start.y)
+    text6.setAttribute('x', point6start.x)
+    text6.setAttribute('y', point6start.y)
+
+    x7start.setAttribute('value', point7start.x)
+    y7start.setAttribute('value', point7start.y)
+    rightLowerArm.setAttribute('x2', point7start.x)
+    rightLowerArm.setAttribute('y2', point7start.y)
+    text7.setAttribute('x', point7start.x)
+    text7.setAttribute('y', point7start.y)
+
+    x8start.setAttribute('value', point8start.x)
+    y8start.setAttribute('value', point8start.y)
+    leftUpperLeg.setAttribute('x2', point8start.x)
+    leftUpperLeg.setAttribute('y2', point8start.y)
+    leftLowerLeg.setAttribute('x1', point8start.x)
+    leftLowerLeg.setAttribute('y1', point8start.y)
+    text8.setAttribute('x', point8start.x)
+    text8.setAttribute('y', point8start.y)
+
+    x9start.setAttribute('value', point9start.x)
+    y9start.setAttribute('value', point9start.y)
+    rightUpperLeg.setAttribute('x2', point9start.x)
+    rightUpperLeg.setAttribute('y2', point9start.y)
+    rightLowerLeg.setAttribute('x1', point9start.x)
+    rightLowerLeg.setAttribute('y1', point9start.y)
+    text9.setAttribute('x', point9start.x)
+    text9.setAttribute('y', point9start.y)
+
+    x10start.setAttribute('value', point10start.x)
+    y10start.setAttribute('value', point10start.y)
+    leftLowerLeg.setAttribute('x2', point10start.x)
+    leftLowerLeg.setAttribute('y2', point10start.y)
+    text10.setAttribute('x', point10start.x)
+    text10.setAttribute('y', point10start.y)
+
+    x11start.setAttribute('value', point11start.x)
+    y11start.setAttribute('value', point11start.y)
+    rightLowerLeg.setAttribute('x2', point11start.x)
+    rightLowerLeg.setAttribute('y2', point11start.y)
+    text11.setAttribute('x', point11start.x)
+    text11.setAttribute('y', point11start.y)
+
+    // Event listeners
+    x1start.addEventListener('input', (e) => {
+      head.setAttribute('cx', e.target.value)
+      neck.setAttribute('x1', e.target.value)
+      text1.setAttribute('x', e.target.value)
+    })
+    y1start.addEventListener('input', (e) => {
+      head.setAttribute('cy', e.target.value)
+      neck.setAttribute('y1', e.target.value)
+      text1.setAttribute('y', e.target.value)
+    })
+
+    x2start.addEventListener('input', (e) => {
+      neck.setAttribute('x2', e.target.value)
+      body.setAttribute('x1', e.target.value)
+      leftUpperArm.setAttribute('x1', e.target.value)
+      rightUpperArm.setAttribute('x1', e.target.value)
+      text2.setAttribute('x', e.target.value)
+    })
+    y2start.addEventListener('input', (e) => {
+      neck.setAttribute('y2', e.target.value)
+      body.setAttribute('y1', e.target.value)
+      leftUpperArm.setAttribute('y1', e.target.value)
+      rightUpperArm.setAttribute('y1', e.target.value)
+      text2.setAttribute('y', e.target.value)
+    })
+
+    x3start.addEventListener('input', (e) => {
+      leftUpperArm.setAttribute('x2', e.target.value)
+      text3.setAttribute('x', e.target.value)
+    })
+    y3start.addEventListener('input', (e) => {
+      leftUpperArm.setAttribute('y2', e.target.value)
+      text3.setAttribute('y', e.target.value)
+    })
+
+    x4start.addEventListener('input', (e) => {
+      rightUpperArm.setAttribute('x2', e.target.value)
+      rightLowerArm.setAttribute('x1', e.target.value)
+      text4.setAttribute('x', e.target.value)
+    })
+    y4start.addEventListener('input', (e) => {
+      rightUpperArm.setAttribute('y2', e.target.value)
+      rightLowerArm.setAttribute('y1', e.target.value)
+      text4.setAttribute('y', e.target.value)
+    })
+
+    x5start.addEventListener('input', (e) => {
+      body.setAttribute('x2', e.target.value)
+      leftUpperLeg.setAttribute('x1', e.target.value)
+      rightUpperLeg.setAttribute('x1', e.target.value)
+      text5.setAttribute('x', e.target.value)
+    })
+    y5start.addEventListener('input', (e) => {
+      body.setAttribute('y2', e.target.value)
+      leftUpperLeg.setAttribute('y1', e.target.value)
+      rightUpperLeg.setAttribute('y1', e.target.value)
+      text5.setAttribute('y', e.target.value)
+    })
+
+    x6start.addEventListener('input', (e) => {
+      leftLowerArm.setAttribute('x2', e.target.value)
+      text6.setAttribute('x', e.target.value)
+    })
+    y6start.addEventListener('input', (e) => {
+      leftLowerArm.setAttribute('y2', e.target.value)
+      text6.setAttribute('y', e.target.value)
+    })
+
+    x7start.addEventListener('input', (e) => {
+      rightLowerArm.setAttribute('x2', e.target.value)
+      text7.setAttribute('x', e.target.value)
+    })
+    y7start.addEventListener('input', (e) => {
+      rightLowerArm.setAttribute('y2', e.target.value)
+      text7.setAttribute('y', e.target.value)
+    })
+
+    x8start.addEventListener('input', (e) => {
+      leftUpperLeg.setAttribute('x2', e.target.value)
+      leftLowerLeg.setAttribute('x1', e.target.value)
+      text8.setAttribute('x', e.target.value)
+    })
+    y8start.addEventListener('input', (e) => {
+      leftUpperLeg.setAttribute('y2', e.target.value)
+      leftLowerLeg.setAttribute('y1', e.target.value)
+      text8.setAttribute('y', e.target.value)
+    })
+
+    x9start.addEventListener('input', (e) => {
+      rightUpperLeg.setAttribute('x2', e.target.value)
+      rightLowerLeg.setAttribute('x1', e.target.value)
+      text9.setAttribute('x', e.target.value)
+    })
+    y9start.addEventListener('input', (e) => {
+      rightUpperLeg.setAttribute('y2', e.target.value)
+      rightLowerLeg.setAttribute('y1', e.target.value)
+      text9.setAttribute('y', e.target.value)
+    })
+
+    x10start.addEventListener('input', (e) => {
+      leftLowerLeg.setAttribute('x2', e.target.value)
+      text10.setAttribute('x', e.target.value)
+    })
+    y10start.addEventListener('input', (e) => {
+      leftLowerLeg.setAttribute('y2', e.target.value)
+      text10.setAttribute('y', e.target.value)
+    })
+
+    x11start.addEventListener('input', (e) => {
+      rightLowerLeg.setAttribute('x2', e.target.value)
+      text11.setAttribute('x', e.target.value)
+    })
+    y11start.addEventListener('input', (e) => {
+      rightLowerLeg.setAttribute('y2', e.target.value)
+      text11.setAttribute('y', e.target.value)
+    })
+  </script>
+  <title>Stick figure maker</title>
+</head>
+
+<body>
+  <h1>Stick figure animator</h1>
+
+  <svg width="200" height="200">
+    <circle id="head" r="16" />
+    <line id="neck" />
+    <line id="left-upper-arm" />
+    <line id="body" />
+    <line id="right-upper-arm" />
+    <line id="left-lower-arm" />
+    <line id="right-lower-arm" />
+    <line id="left-upper-leg" />
+    <line id="right-upper-leg" />
+    <line id="left-lower-leg" />
+    <line id="right-lower-leg" />
+
+    <text id="text-1">1</text>
+    <text id="text-2">2</text>
+    <text id="text-3">3</text>
+    <text id="text-4">4</text>
+    <text id="text-5">5</text>
+    <text id="text-6">6</text>
+    <text id="text-7">7</text>
+    <text id="text-8">8</text>
+    <text id="text-9">9</text>
+    <text id="text-10">10</text>
+    <text id="text-11">11</text>
+  </svg>
+
+  <h2>Start points</h2>
+  <label for="x-1-start">x 1 start</label>
+  <input id="x-1-start" type="range" min="0" max="200" step="1">
+  <label for="y-1-start">y 1 start</label>
+  <input id="y-1-start" type="range" min="0" max="200" step="1">
+
+  <label for="x-2-start">x 2 start</label>
+  <input id="x-2-start" type="range" min="0" max="200" step="1">
+  <label for="y-2-start">y 2 start</label>
+  <input id="y-2-start" type="range" min="0" max="200" step="1">
+
+  <label for="x-3-start">x 3 start</label>
+  <input id="x-3-start" type="range" min="0" max="200" step="1">
+  <label for="y-3-start">y 3 start</label>
+  <input id="y-3-start" type="range" min="0" max="200" step="1">
+
+  <label for="x-4-start">x 4 start</label>
+  <input id="x-4-start" type="range" min="0" max="200" step="1">
+  <label for="y-4-start">y 4 start</label>
+  <input id="y-4-start" type="range" min="0" max="200" step="1">
+
+  <label for="x-5-start">x 5 start</label>
+  <input id="x-5-start" type="range" min="0" max="200" step="1">
+  <label for="y-5-start">y 5 start</label>
+  <input id="y-5-start" type="range" min="0" max="200" step="1">
+
+  <label for="x-6-start">x 6 start</label>
+  <input id="x-6-start" type="range" min="0" max="200" step="1">
+  <label for="y-6-start">y 6 start</label>
+  <input id="y-6-start" type="range" min="0" max="200" step="1">
+
+  <label for="x-7-start">x 7 start</label>
+  <input id="x-7-start" type="range" min="0" max="200" step="1">
+  <label for="y-7-start">y 7 start</label>
+  <input id="y-7-start" type="range" min="0" max="200" step="1">
+
+  <label for="x-8-start">x 8 start</label>
+  <input id="x-8-start" type="range" min="0" max="200" step="1">
+  <label for="y-8-start">y 8 start</label>
+  <input id="y-8-start" type="range" min="0" max="200" step="1">
+
+  <label for="x-9-start">x 9 start</label>
+  <input id="x-9-start" type="range" min="0" max="200" step="1">
+  <label for="y-9-start">y 9 start</label>
+  <input id="y-9-start" type="range" min="0" max="200" step="1">
+
+  <label for="x-10-start">x 10 start</label>
+  <input id="x-10-start" type="range" min="0" max="200" step="1">
+  <label for="y-10-start">y 10 start</label>
+  <input id="y-10-start" type="range" min="0" max="200" step="1">
+
+  <label for="x-11-start">x 11 start</label>
+  <input id="x-11-start" type="range" min="0" max="200" step="1">
+  <label for="y-11-start">y 11 start</label>
+  <input id="y-11-start" type="range" min="0" max="200" step="1">
+
+</body>
+
+</html>
