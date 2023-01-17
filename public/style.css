@@ -17,7 +17,6 @@ line {
   stroke-linecap: round;
 }
 
-text {
+.point {
   fill: red;
-  translate: -4px 4px;
 }
