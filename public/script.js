@@ -4,9 +4,9 @@ const svgElement = document.querySelector('svg');
 /**
  * @param { number } id
  * @param {{ x: number, y: number }} point
- * @param {{ partId: string, xAttribute: string, yAttribute: string }} connectors
+ * @param {{ partId: string, xAttribute: string, yAttribute: string }} elementData
  */
-const setupPoint = (id, point, connectors) => {
+const setupPoint = (id, point, elementData) => {
   // Set up HTML
   const textElement = document.createElementNS(
     'http://www.w3.org/2000/svg',
@@ -40,24 +40,24 @@ const setupPoint = (id, point, connectors) => {
   xInputElement.setAttribute('value', point.x);
   yInputElement.setAttribute('value', point.y);
 
-  connectors.forEach((connector) => {
-    const element = document.querySelector(connector.partId);
-    element.setAttribute(connector.xAttribute, point.x);
-    element.setAttribute(connector.yAttribute, point.y);
+  elementData.forEach((data) => {
+    const element = document.querySelector(data.partId);
+    element.setAttribute(data.xAttribute, point.x);
+    element.setAttribute(data.yAttribute, point.y);
   });
 
   // Set up event listeners
   xInputElement.addEventListener('input', (e) => {
-    connectors.forEach((connector) => {
-      const element = document.querySelector(connector.partId);
-      element.setAttribute(connector.xAttribute, e.target.value);
+    elementData.forEach((data) => {
+      const element = document.querySelector(data.partId);
+      element.setAttribute(data.xAttribute, e.target.value);
     });
     textElement.setAttribute('x', e.target.value);
   });
   yInputElement.addEventListener('input', (e) => {
-    connectors.forEach((connector) => {
-      const element = document.querySelector(connector.partId);
-      element.setAttribute(connector.yAttribute, e.target.value);
+    elementData.forEach((data) => {
+      const element = document.querySelector(data.partId);
+      element.setAttribute(data.yAttribute, e.target.value);
     });
     textElement.setAttribute('y', e.target.value);
   });
