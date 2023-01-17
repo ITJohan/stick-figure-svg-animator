@@ -3,6 +3,16 @@ body {
   flex-direction: column;
 }
 
+main {
+  display: flex;
+  gap: 8px;
+}
+
+section {
+  display: flex;
+  flex-direction: column;
+}
+
 svg {
   background-color: black;
 }
