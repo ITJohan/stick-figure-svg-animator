@@ -1,9 +1,10 @@
 const bodyElement = document.querySelector('body');
 const svgElement = document.querySelector('svg');
+
 /**
- * @parameter id number
- * @parameter point {x: number, y: number}
- * @parameter connectors {partId: string, xAttribute: string, yAttribute: string, inputId: string, }
+ * @param { number } id
+ * @param {{ x: number, y: number }} point
+ * @param {{ partId: string, xAttribute: string, yAttribute: string }} connectors
  */
 const setupPoint = (id, point, connectors) => {
   // Set up HTML
