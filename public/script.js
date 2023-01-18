@@ -21,6 +21,30 @@ const setupPoint = (point, elementData, svgElement) => {
     const element = document.querySelector(data.partId);
     element.setAttribute(data.xAttribute, point.x);
     element.setAttribute(data.yAttribute, point.y);
+
+    const side = data.partId.split('-').slice(0, 1);
+    const resultSelector = `#result-${data.partId
+      .split('-')
+      .slice(1)
+      .join('-')}`;
+    const xAnimate = document.querySelector(
+      `${resultSelector} > animate[attributeName="${data.xAttribute}"]`
+    );
+    const yAnimate = document.querySelector(
+      `${resultSelector} > animate[attributeName="${data.yAttribute}"]`
+    );
+
+    if (side[0] === '#start') {
+      xAnimate.setAttribute('values', `${point.x};0;${point.x}`);
+      yAnimate.setAttribute('values', `${point.y};0;${point.y}`);
+    } else {
+      const xValues = xAnimate.getAttribute('values').split(';');
+      const yValues = yAnimate.getAttribute('values').split(';');
+      xValues[1] = point.x;
+      yValues[1] = point.y;
+      xAnimate.setAttribute('values', xValues.join(';'));
+      yAnimate.setAttribute('values', yValues.join(';'));
+    }
   });
 
   // Event listeners
@@ -31,6 +55,42 @@ const setupPoint = (point, elementData, svgElement) => {
         const element = document.querySelector(data.partId);
         element.setAttribute(data.xAttribute, e.offsetX);
         element.setAttribute(data.yAttribute, e.offsetY);
+
+        const resultElement = document.querySelector(
+          `#result-${data.partId.split('-').slice(1).join('-')}`
+        );
+        resultElement.setAttribute(data.xAttribute, e.offsetX);
+        resultElement.setAttribute(data.yAttribute, e.offsetY);
+
+        const side = data.partId.split('-').slice(0, 1);
+        const resultSelector = `#result-${data.partId
+          .split('-')
+          .slice(1)
+          .join('-')}`;
+        const xAnimate = document.querySelector(
+          `${resultSelector} > animate[attributeName="${data.xAttribute}"]`
+        );
+        const yAnimate = document.querySelector(
+          `${resultSelector} > animate[attributeName="${data.yAttribute}"]`
+        );
+
+        if (side[0] === '#start') {
+          const xValues = xAnimate.getAttribute('values').split(';');
+          const yValues = yAnimate.getAttribute('values').split(';');
+          xValues[0] = e.offsetX;
+          yValues[0] = e.offsetY;
+          xValues[2] = e.offsetX;
+          yValues[2] = e.offsetY;
+          xAnimate.setAttribute('values', xValues.join(';'));
+          yAnimate.setAttribute('values', yValues.join(';'));
+        } else {
+          const xValues = xAnimate.getAttribute('values').split(';');
+          const yValues = yAnimate.getAttribute('values').split(';');
+          xValues[1] = e.offsetX;
+          yValues[1] = e.offsetY;
+          xAnimate.setAttribute('values', xValues.join(';'));
+          yAnimate.setAttribute('values', yValues.join(';'));
+        }
       });
 
       pointElement.setAttribute('cx', e.offsetX);
