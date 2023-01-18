@@ -91,6 +91,9 @@ const setupPoint = (point, elementData, svgElement) => {
           xAnimate.setAttribute('values', xValues.join(';'));
           yAnimate.setAttribute('values', yValues.join(';'));
         }
+
+        const coordinatesElement = document.querySelector('strong');
+        coordinatesElement.innerText = `${e.offsetX}, ${e.offsetY}`;
       });
 
       pointElement.setAttribute('cx', e.offsetX);
