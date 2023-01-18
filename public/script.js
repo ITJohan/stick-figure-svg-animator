@@ -43,25 +43,29 @@ const setupPoint = (point, elementData, svgElement) => {
   svgElement.appendChild(pointElement);
 };
 
-const setupPoints = (side, svgSelector) => {
+const setupPoints = (sideTag, svgSelector) => {
   const svgElement = document.querySelector(svgSelector);
 
   setupPoint(
     { x: 100, y: 16, isActive: false },
     [
-      { partId: `#${side}-head`, xAttribute: 'cx', yAttribute: 'cy' },
-      { partId: `#${side}-neck`, xAttribute: 'x1', yAttribute: 'y1' },
+      { partId: `#${sideTag}-head`, xAttribute: 'cx', yAttribute: 'cy' },
+      { partId: `#${sideTag}-neck`, xAttribute: 'x1', yAttribute: 'y1' },
     ],
     svgElement
   );
   setupPoint(
     { x: 100, y: 40, isActive: false },
     [
-      { partId: `#${side}-neck`, xAttribute: 'x2', yAttribute: 'y2' },
-      { partId: `#${side}-body`, xAttribute: 'x1', yAttribute: 'y1' },
-      { partId: `#${side}-left-upper-arm`, xAttribute: 'x1', yAttribute: 'y1' },
+      { partId: `#${sideTag}-neck`, xAttribute: 'x2', yAttribute: 'y2' },
+      { partId: `#${sideTag}-body`, xAttribute: 'x1', yAttribute: 'y1' },
       {
-        partId: `#${side}-right-upper-arm`,
+        partId: `#${sideTag}-left-upper-arm`,
+        xAttribute: 'x1',
+        yAttribute: 'y1',
+      },
+      {
+        partId: `#${sideTag}-right-upper-arm`,
         xAttribute: 'x1',
         yAttribute: 'y1',
       },
@@ -71,8 +75,16 @@ const setupPoints = (side, svgSelector) => {
   setupPoint(
     { x: 80, y: 80, isActive: false },
     [
-      { partId: `#${side}-left-upper-arm`, xAttribute: 'x2', yAttribute: 'y2' },
-      { partId: `#${side}-left-lower-arm`, xAttribute: 'x1', yAttribute: 'y1' },
+      {
+        partId: `#${sideTag}-left-upper-arm`,
+        xAttribute: 'x2',
+        yAttribute: 'y2',
+      },
+      {
+        partId: `#${sideTag}-left-lower-arm`,
+        xAttribute: 'x1',
+        yAttribute: 'y1',
+      },
     ],
     svgElement
   );
@@ -80,12 +92,12 @@ const setupPoints = (side, svgSelector) => {
     { x: 120, y: 80, isActive: false },
     [
       {
-        partId: `#${side}-right-upper-arm`,
+        partId: `#${sideTag}-right-upper-arm`,
         xAttribute: 'x2',
         yAttribute: 'y2',
       },
       {
-        partId: `#${side}-right-lower-arm`,
+        partId: `#${sideTag}-right-lower-arm`,
         xAttribute: 'x1',
         yAttribute: 'y1',
       },
@@ -95,10 +107,14 @@ const setupPoints = (side, svgSelector) => {
   setupPoint(
     { x: 100, y: 104, isActive: false },
     [
-      { partId: `#${side}-body`, xAttribute: 'x2', yAttribute: 'y2' },
-      { partId: `#${side}-left-upper-leg`, xAttribute: 'x1', yAttribute: 'y1' },
+      { partId: `#${sideTag}-body`, xAttribute: 'x2', yAttribute: 'y2' },
       {
-        partId: `#${side}-right-upper-leg`,
+        partId: `#${sideTag}-left-upper-leg`,
+        xAttribute: 'x1',
+        yAttribute: 'y1',
+      },
+      {
+        partId: `#${sideTag}-right-upper-leg`,
         xAttribute: 'x1',
         yAttribute: 'y1',
       },
@@ -107,14 +123,20 @@ const setupPoints = (side, svgSelector) => {
   );
   setupPoint(
     { x: 80, y: 104, isActive: false },
-    [{ partId: `#${side}-left-lower-arm`, xAttribute: 'x2', yAttribute: 'y2' }],
+    [
+      {
+        partId: `#${sideTag}-left-lower-arm`,
+        xAttribute: 'x2',
+        yAttribute: 'y2',
+      },
+    ],
     svgElement
   );
   setupPoint(
     { x: 120, y: 104, isActive: false },
     [
       {
-        partId: `#${side}-right-lower-arm`,
+        partId: `#${sideTag}-right-lower-arm`,
         xAttribute: 'x2',
         yAttribute: 'y2',
       },
@@ -124,8 +146,16 @@ const setupPoints = (side, svgSelector) => {
   setupPoint(
     { x: 80, y: 124, isActive: false },
     [
-      { partId: `#${side}-left-upper-leg`, xAttribute: 'x2', yAttribute: 'y2' },
-      { partId: `#${side}-left-lower-leg`, xAttribute: 'x1', yAttribute: 'y1' },
+      {
+        partId: `#${sideTag}-left-upper-leg`,
+        xAttribute: 'x2',
+        yAttribute: 'y2',
+      },
+      {
+        partId: `#${sideTag}-left-lower-leg`,
+        xAttribute: 'x1',
+        yAttribute: 'y1',
+      },
     ],
     svgElement
   );
@@ -133,12 +163,12 @@ const setupPoints = (side, svgSelector) => {
     { x: 120, y: 124, isActive: false },
     [
       {
-        partId: `#${side}-right-upper-leg`,
+        partId: `#${sideTag}-right-upper-leg`,
         xAttribute: 'x2',
         yAttribute: 'y2',
       },
       {
-        partId: `#${side}-right-lower-leg`,
+        partId: `#${sideTag}-right-lower-leg`,
         xAttribute: 'x1',
         yAttribute: 'y1',
       },
@@ -147,14 +177,20 @@ const setupPoints = (side, svgSelector) => {
   );
   setupPoint(
     { x: 80, y: 160, isActive: false },
-    [{ partId: `#${side}-left-lower-leg`, xAttribute: 'x2', yAttribute: 'y2' }],
+    [
+      {
+        partId: `#${sideTag}-left-lower-leg`,
+        xAttribute: 'x2',
+        yAttribute: 'y2',
+      },
+    ],
     svgElement
   );
   setupPoint(
     { x: 120, y: 160, isActive: false },
     [
       {
-        partId: `#${side}-right-lower-leg`,
+        partId: `#${sideTag}-right-lower-leg`,
         xAttribute: 'x2',
         yAttribute: 'y2',
       },
