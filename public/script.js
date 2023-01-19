@@ -8,13 +8,21 @@ const setupPoint = (point, elementData, svgElement) => {
     'http://www.w3.org/2000/svg',
     'circle'
   );
-  pointElement.classList.add('point');
+  // pointElement.classList.add('point');
+  pointElement.setAttribute('fill', 'red');
   pointElement.setAttribute('cx', point.x);
   pointElement.setAttribute('cy', point.y);
-  pointElement.setAttribute('r', '4');
+  pointElement.setAttribute('r', '6');
   pointElement.setAttribute('id', point.id);
   elementData.forEach((data) => {
     const element = document.querySelector(data.partId);
+    if (data.partId.includes('head')) {
+      element.setAttribute('fill', 'white');
+    } else {
+      element.setAttribute('stroke', 'white');
+      element.setAttribute('stroke-width', '8');
+      element.setAttribute('stroke-linecap', 'round');
+    }
     element.setAttribute(data.xAttribute, point.x);
     element.setAttribute(data.yAttribute, point.y);
 
@@ -23,6 +31,14 @@ const setupPoint = (point, elementData, svgElement) => {
       .split('-')
       .slice(1)
       .join('-')}`;
+    const resultElement = document.querySelector(resultSelector);
+    if (resultElement.getAttribute('id').includes('head')) {
+      resultElement.setAttribute('fill', 'white');
+    } else {
+      resultElement.setAttribute('stroke', 'white');
+      resultElement.setAttribute('stroke-width', '8');
+      resultElement.setAttribute('stroke-linecap', 'round');
+    }
     const xAnimate = document.querySelector(
       `${resultSelector} > animate[attributeName="${data.xAttribute}"]`
     );
