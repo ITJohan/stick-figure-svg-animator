@@ -263,6 +263,7 @@ setupPoints('end', '#end-svg');
 
 document.querySelector('button').addEventListener('click', () => {
   const startSvg = document.querySelector('#start-svg');
+
   startSvg.childNodes.forEach((node) => {
     if (node.nodeName === 'circle') {
       const xAttribute = node.getAttribute('cx');
@@ -277,6 +278,28 @@ document.querySelector('button').addEventListener('click', () => {
       const endElement = document.querySelector(endSelector);
       endElement.setAttribute('cx', xAttribute);
       endElement.setAttribute('cy', yAttribute);
+
+      if (node.getAttribute('id') === '#start-head') {
+        const resultSelector = `#result-${node
+          .getAttribute('id')
+          .split('-')
+          .slice(1)
+          .join('-')}`;
+
+        const xAnimate = document.querySelector(
+          `${resultSelector} > animate[attributeName="cx"]`
+        );
+        const yAnimate = document.querySelector(
+          `${resultSelector} > animate[attributeName="cy"]`
+        );
+
+        const xValues = xAnimate.getAttribute('values').split(';');
+        const yValues = yAnimate.getAttribute('values').split(';');
+        xValues[1] = xAttribute;
+        yValues[1] = yAttribute;
+        xAnimate.setAttribute('values', xValues.join(';'));
+        yAnimate.setAttribute('values', yValues.join(';'));
+      }
     }
 
     if (node.nodeName === 'line') {
@@ -296,6 +319,38 @@ document.querySelector('button').addEventListener('click', () => {
       endElement.setAttribute('y1', y1Attribute);
       endElement.setAttribute('x2', x2Attribute);
       endElement.setAttribute('y2', y2Attribute);
+
+      const resultSelector = `#result-${node
+        .getAttribute('id')
+        .split('-')
+        .slice(1)
+        .join('-')}`;
+
+      const x1Animate = document.querySelector(
+        `${resultSelector} > animate[attributeName="x1"]`
+      );
+      const y1Animate = document.querySelector(
+        `${resultSelector} > animate[attributeName="y1"]`
+      );
+      const x2Animate = document.querySelector(
+        `${resultSelector} > animate[attributeName="x2"]`
+      );
+      const y2Animate = document.querySelector(
+        `${resultSelector} > animate[attributeName="y2"]`
+      );
+
+      const x1Values = x1Animate.getAttribute('values').split(';');
+      const y1Values = y1Animate.getAttribute('values').split(';');
+      const x2Values = x2Animate.getAttribute('values').split(';');
+      const y2Values = y2Animate.getAttribute('values').split(';');
+      x1Values[1] = x1Attribute;
+      y1Values[1] = y1Attribute;
+      x2Values[1] = x2Attribute;
+      y2Values[1] = y2Attribute;
+      x1Animate.setAttribute('values', x1Values.join(';'));
+      y1Animate.setAttribute('values', y1Values.join(';'));
+      x2Animate.setAttribute('values', x2Values.join(';'));
+      y2Animate.setAttribute('values', y2Values.join(';'));
     }
   });
 });
