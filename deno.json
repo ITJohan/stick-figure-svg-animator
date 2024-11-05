@@ -1,5 +1,14 @@
 {
+  "compilerOptions": {
+    "checkJs": true,
+    "lib": [
+      "deno.ns", "dom", "dom.iterable"
+    ]
+  },
   "tasks": {
-    "dev": "deno run --watch --allow-read --allow-net server.ts"
+    "dev": "deno run -NR --watch-hmr server.ts"
+  },
+  "imports": {
+    "@std/http": "jsr:@std/http@^1.0.9"
   }
 }

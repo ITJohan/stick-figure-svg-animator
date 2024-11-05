@@ -1,7 +1,6 @@
-import { serve } from 'https://deno.land/std/http/server.ts';
-import { serveDir } from 'https://deno.land/std/http/file_server.ts';
+import { serveDir } from '@std/http/file-server';
 
-serve((req) =>
+Deno.serve((req) =>
   serveDir(req, {
     fsRoot: './public',
   })
