@@ -1,8 +1,24 @@
-const bodyElement = document.querySelector('body');
-const startSvg = document.querySelector('#start-svg');
-const endSvg = document.querySelector('#end-svg');
+/**
+ * @typedef {{
+ *  id: string;
+ *  x: number;
+ *  y: number;
+ *  isActive: boolean
+ * }} Point 
+ */
 
-const setupPoint = (point, elementData, svgElement) => {
+/**
+ * @typedef {{
+ *  partId: string;
+ *  xAttribute: string;
+ *  yAttribute: string;
+ * }} ElementData
+ */
+
+const setupPoint = (
+  /** @type {Point} */ point,
+  /** @type {ElementData[]} */ elementData,
+  /** @type {SVGElement} */ svgElement) => {
   // Setup elements
   const pointElement = document.createElementNS(
     'http://www.w3.org/2000/svg',
@@ -10,12 +26,12 @@ const setupPoint = (point, elementData, svgElement) => {
   );
   // pointElement.classList.add('point');
   pointElement.setAttribute('fill', 'red');
-  pointElement.setAttribute('cx', point.x);
-  pointElement.setAttribute('cy', point.y);
+  pointElement.setAttribute('cx', String(point.x));
+  pointElement.setAttribute('cy', String(point.y));
   pointElement.setAttribute('r', '6');
   pointElement.setAttribute('id', point.id);
   elementData.forEach((data) => {
-    const element = document.querySelector(data.partId);
+    const element = /** @type {SVGLineElement | SVGCircleElement} */ (document.querySelector(data.partId));
     if (data.partId.includes('head')) {
       element.setAttribute('fill', 'white');
     } else {
@@ -23,37 +39,40 @@ const setupPoint = (point, elementData, svgElement) => {
       element.setAttribute('stroke-width', '8');
       element.setAttribute('stroke-linecap', 'round');
     }
-    element.setAttribute(data.xAttribute, point.x);
-    element.setAttribute(data.yAttribute, point.y);
+    element.setAttribute(data.xAttribute, String(point.x));
+    element.setAttribute(data.yAttribute, String(point.y));
 
     const side = data.partId.split('-').slice(0, 1);
     const resultSelector = `#result-${data.partId
       .split('-')
       .slice(1)
       .join('-')}`;
-    const resultElement = document.querySelector(resultSelector);
-    if (resultElement.getAttribute('id').includes('head')) {
+    const resultElement = /** @type {SVGLineElement | SVGCircleElement} */ (document.querySelector(resultSelector));
+    const id = /** @type {string} */ (resultElement.getAttribute('id'))
+    if (id.includes('head')) {
       resultElement.setAttribute('fill', 'white');
     } else {
       resultElement.setAttribute('stroke', 'white');
       resultElement.setAttribute('stroke-width', '8');
       resultElement.setAttribute('stroke-linecap', 'round');
     }
-    const xAnimate = document.querySelector(
+    const xAnimate = /** @type {SVGAnimateElement} */ (document.querySelector(
       `${resultSelector} > animate[attributeName="${data.xAttribute}"]`
-    );
-    const yAnimate = document.querySelector(
+    ));
+    const yAnimate = /** @type {SVGAnimateElement} */ (document.querySelector(
       `${resultSelector} > animate[attributeName="${data.yAttribute}"]`
-    );
+    ));
 
     if (side[0] === '#start') {
       xAnimate.setAttribute('values', `${point.x};0;${point.x}`);
       yAnimate.setAttribute('values', `${point.y};0;${point.y}`);
     } else {
-      const xValues = xAnimate.getAttribute('values').split(';');
-      const yValues = yAnimate.getAttribute('values').split(';');
-      xValues[1] = point.x;
-      yValues[1] = point.y;
+      const xValuesAttribute = /** @type {string} */ (xAnimate.getAttribute('values'));
+      const yValuesAttribute = /** @type {string} */ (yAnimate.getAttribute('values'));
+      const xValues = xValuesAttribute.split(';');
+      const yValues = yValuesAttribute.split(';');
+      xValues[1] = String(point.x);
+      yValues[1] = String(point.y);
       xAnimate.setAttribute('values', xValues.join(';'));
       yAnimate.setAttribute('values', yValues.join(';'));
     }
@@ -64,52 +83,56 @@ const setupPoint = (point, elementData, svgElement) => {
   pointElement.addEventListener('mousemove', (e) => {
     if (point.isActive) {
       elementData.forEach((data) => {
-        const element = document.querySelector(data.partId);
-        element.setAttribute(data.xAttribute, e.offsetX);
-        element.setAttribute(data.yAttribute, e.offsetY);
+        const element = /** @type {SVGLineElement | SVGCircleElement} */ (document.querySelector(data.partId));
+        element.setAttribute(data.xAttribute, String(e.offsetX));
+        element.setAttribute(data.yAttribute, String(e.offsetY));
 
-        const resultElement = document.querySelector(
+        const resultElement = /** @type {SVGLineElement | SVGCircleElement} */ (document.querySelector(
           `#result-${data.partId.split('-').slice(1).join('-')}`
-        );
-        resultElement.setAttribute(data.xAttribute, e.offsetX);
-        resultElement.setAttribute(data.yAttribute, e.offsetY);
+        ));
+        resultElement.setAttribute(data.xAttribute, String(e.offsetX));
+        resultElement.setAttribute(data.yAttribute, String(e.offsetY));
 
         const side = data.partId.split('-').slice(0, 1);
         const resultSelector = `#result-${data.partId
           .split('-')
           .slice(1)
           .join('-')}`;
-        const xAnimate = document.querySelector(
+        const xAnimate = /** @type {SVGAnimateElement} */ (document.querySelector(
           `${resultSelector} > animate[attributeName="${data.xAttribute}"]`
-        );
-        const yAnimate = document.querySelector(
+        ));
+        const yAnimate = /** @type {SVGAnimateElement} */ (document.querySelector(
           `${resultSelector} > animate[attributeName="${data.yAttribute}"]`
-        );
+        ));
 
         if (side[0] === '#start') {
-          const xValues = xAnimate.getAttribute('values').split(';');
-          const yValues = yAnimate.getAttribute('values').split(';');
-          xValues[0] = e.offsetX;
-          yValues[0] = e.offsetY;
-          xValues[2] = e.offsetX;
-          yValues[2] = e.offsetY;
+          const xValuesAttribute = /** @type {string} */ (xAnimate.getAttribute('values'));
+          const yValuesAttribute = /** @type {string} */ (yAnimate.getAttribute('values'));
+          const xValues = xValuesAttribute.split(';');
+          const yValues = yValuesAttribute.split(';');
+          xValues[0] = String(e.offsetX);
+          yValues[0] = String(e.offsetY);
+          xValues[2] = String(e.offsetX);
+          yValues[2] = String(e.offsetY);
           xAnimate.setAttribute('values', xValues.join(';'));
           yAnimate.setAttribute('values', yValues.join(';'));
         } else {
-          const xValues = xAnimate.getAttribute('values').split(';');
-          const yValues = yAnimate.getAttribute('values').split(';');
-          xValues[1] = e.offsetX;
-          yValues[1] = e.offsetY;
+          const xValuesAttribute = /** @type {string} */ (xAnimate.getAttribute('values'));
+          const yValuesAttribute = /** @type {string} */ (yAnimate.getAttribute('values'));
+          const xValues = xValuesAttribute.split(';');
+          const yValues = yValuesAttribute.split(';');
+          xValues[1] = String(e.offsetX);
+          yValues[1] = String(e.offsetY);
           xAnimate.setAttribute('values', xValues.join(';'));
           yAnimate.setAttribute('values', yValues.join(';'));
         }
 
-        const coordinatesElement = document.querySelector('strong');
+        const coordinatesElement = /** @type {HTMLElement} */ (document.querySelector('strong'));
         coordinatesElement.innerText = `${e.offsetX}, ${e.offsetY}`;
       });
 
-      pointElement.setAttribute('cx', e.offsetX);
-      pointElement.setAttribute('cy', e.offsetY);
+      pointElement.setAttribute('cx', String(e.offsetX));
+      pointElement.setAttribute('cy', String(e.offsetY));
     }
   });
   pointElement.addEventListener('mouseup', () => (point.isActive = false));
@@ -119,6 +142,7 @@ const setupPoint = (point, elementData, svgElement) => {
 };
 
 const setupPoints = (sideTag, svgSelector) => {
+  /** @type {SVGElement} */
   const svgElement = document.querySelector(svgSelector);
 
   setupPoint(
@@ -277,8 +301,10 @@ const setupPoints = (sideTag, svgSelector) => {
 setupPoints('start', '#start-svg');
 setupPoints('end', '#end-svg');
 
-document.querySelector('button').addEventListener('click', () => {
-  const startSvg = document.querySelector('#start-svg');
+const button = /** @type {HTMLButtonElement} */ (document.querySelector('button')); 
+
+button.addEventListener('click', () => {
+  const startSvg = /** @type {SVGElement} */ (document.querySelector('#start-svg'));
 
   startSvg.childNodes.forEach((node) => {
     if (node.nodeName === 'circle') {
