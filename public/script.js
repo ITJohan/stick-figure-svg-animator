@@ -141,9 +141,8 @@ const setupPoint = (
   svgElement.appendChild(pointElement);
 };
 
-const setupPoints = (sideTag, svgSelector) => {
-  /** @type {SVGElement} */
-  const svgElement = document.querySelector(svgSelector);
+const setupPoints = (/** @type {string} */ sideTag, /** @type {string} */ svgSelector) => {
+  const svgElement = /** @type {SVGElement} */ (document.querySelector(svgSelector));
 
   setupPoint(
     { id: `${sideTag}-point-1`, x: 100, y: 16, isActive: false },
@@ -307,23 +306,24 @@ button.addEventListener('click', () => {
   const startSvg = /** @type {SVGElement} */ (document.querySelector('#start-svg'));
 
   startSvg.childNodes.forEach((node) => {
-    if (node.nodeName === 'circle') {
+    if (node instanceof SVGCircleElement) {
       const xAttribute = node.getAttribute('cx');
       const yAttribute = node.getAttribute('cy');
+      const idAttribute = node.getAttribute('id')
 
-      const endSelector = `#end-${node
-        .getAttribute('id')
+      if (xAttribute === null || yAttribute === null || idAttribute === null) throw new Error('missing attributes')
+
+      const endSelector = `#end-${idAttribute
         .split('-')
         .slice(1)
         .join('-')}`;
 
-      const endElement = document.querySelector(endSelector);
+      const endElement = /** @type {SVGCircleElement} */ (document.querySelector(endSelector));
       endElement.setAttribute('cx', xAttribute);
       endElement.setAttribute('cy', yAttribute);
 
-      if (node.getAttribute('id') === '#start-head') {
-        const resultSelector = `#result-${node
-          .getAttribute('id')
+      if (idAttribute === '#start-head') {
+        const resultSelector = `#result-${idAttribute
           .split('-')
           .slice(1)
           .join('-')}`;
@@ -335,8 +335,15 @@ button.addEventListener('click', () => {
           `${resultSelector} > animate[attributeName="cy"]`
         );
 
-        const xValues = xAnimate.getAttribute('values').split(';');
-        const yValues = yAnimate.getAttribute('values').split(';');
+        if (xAnimate === null || yAnimate === null) throw new Error('Could not find elements')
+
+        const xValuesAttribute = xAnimate.getAttribute('values');
+        const yValuesAttribute = yAnimate.getAttribute('values');
+
+        if (xValuesAttribute === null || yValuesAttribute === null) throw new Error('Could not find attributes')
+
+        const xValues = xValuesAttribute.split(';');
+        const yValues = yValuesAttribute.split(';');
         xValues[1] = xAttribute;
         yValues[1] = yAttribute;
         xAnimate.setAttribute('values', xValues.join(';'));
@@ -344,26 +351,33 @@ button.addEventListener('click', () => {
       }
     }
 
-    if (node.nodeName === 'line') {
+    if (node instanceof SVGLineElement) {
       const x1Attribute = node.getAttribute('x1');
       const y1Attribute = node.getAttribute('y1');
       const x2Attribute = node.getAttribute('x2');
       const y2Attribute = node.getAttribute('y2');
+      const idAttribute = node.getAttribute('id')
 
-      const endSelector = `#end-${node
-        .getAttribute('id')
+      if (
+        x1Attribute === null ||
+        y1Attribute === null ||
+        x2Attribute === null ||
+        y2Attribute === null ||
+        idAttribute === null
+      ) throw new Error('Missing attributes')
+
+      const endSelector = `#end-${idAttribute
         .split('-')
         .slice(1)
         .join('-')}`;
 
-      const endElement = document.querySelector(endSelector);
+      const endElement = /** @type {SVGLineElement} */ (document.querySelector(endSelector));
       endElement.setAttribute('x1', x1Attribute);
       endElement.setAttribute('y1', y1Attribute);
       endElement.setAttribute('x2', x2Attribute);
       endElement.setAttribute('y2', y2Attribute);
 
-      const resultSelector = `#result-${node
-        .getAttribute('id')
+      const resultSelector = `#result-${idAttribute
         .split('-')
         .slice(1)
         .join('-')}`;
@@ -381,10 +395,30 @@ button.addEventListener('click', () => {
         `${resultSelector} > animate[attributeName="y2"]`
       );
 
-      const x1Values = x1Animate.getAttribute('values').split(';');
-      const y1Values = y1Animate.getAttribute('values').split(';');
-      const x2Values = x2Animate.getAttribute('values').split(';');
-      const y2Values = y2Animate.getAttribute('values').split(';');
+      if (
+        x1Animate === null ||
+        y1Animate === null ||
+        x2Animate === null ||
+        y2Animate === null
+      ) throw new Error('Missing animate elements')
+
+      const x1ValuesAttribute = x1Animate.getAttribute('values');
+      const y1ValuesAttribute = y1Animate.getAttribute('values');
+      const x2ValuesAttribute = x2Animate.getAttribute('values');
+      const y2ValuesAttribute = y2Animate.getAttribute('values');
+
+      if (
+        x1ValuesAttribute === null ||
+        y1ValuesAttribute === null ||
+        x2ValuesAttribute === null ||
+        y2ValuesAttribute === null
+      ) throw new Error('Missing attributes')
+
+
+      const x1Values = x1ValuesAttribute.split(';');
+      const y1Values = y1ValuesAttribute.split(';');
+      const x2Values = x2ValuesAttribute.split(';');
+      const y2Values = y2ValuesAttribute.split(';');
       x1Values[1] = x1Attribute;
       y1Values[1] = y1Attribute;
       x2Values[1] = x2Attribute;
