@@ -15,6 +15,48 @@ customElements.define('stick-figure', class StickFigure extends HTMLElement {
       leftFoot: {x: 80, y: 160}, 
       rightFoot: {x: 120, y: 160},
     }
+    this.limbs = {
+      neck: {
+        from: this.points.head,
+        to: this.points.shoulders
+      },
+      leftUpperArm: {
+        from: this.points.shoulders,
+        to: this.points.leftElbow
+      },
+      body: {
+        from: this.points.shoulders,
+        to: this.points.hips
+      },
+      rightUpperArm: {
+        from: this.points.shoulders,
+        to: this.points.rightElbow
+      },
+      leftLowerArm: {
+        from: this.points.leftElbow,
+        to: this.points.leftHand
+      },
+      rightLowerArm: {
+        from: this.points.rightElbow,
+        to: this.points.rightHand
+      },
+      leftUpperLeg: {
+        from: this.points.hips,
+        to: this.points.leftKnee,
+      },
+      rightUpperLeg: {
+        from: this.points.hips,
+        to: this.points.rightKnee
+      },
+      leftLowerLeg: {
+        from: this.points.leftKnee,
+        to: this.points.leftFoot
+      },
+      rightLowerLeg: {
+        from: this.points.rightKnee,
+        to: this.points.rightFoot
+      }
+    }
   }
 
   connectedCallback() {
@@ -27,101 +69,21 @@ customElements.define('stick-figure', class StickFigure extends HTMLElement {
           r="16"
           fill="white"
         />
-        <line
-          id="${this.id}-neck"
-          x1="${this.points.head.x}" 
-          y1="${this.points.head.y}"
-          x2="${this.points.shoulders.x}" 
-          y2="${this.points.shoulders.y}"
-          stroke="white"
-          stroke-width="8"
-          stroke-linecap="round"
-        />
-        <line
-          id="${this.id}-left-upper-arm"
-          x1="${this.points.shoulders.x}" 
-          y1="${this.points.shoulders.y}"
-          x2="${this.points.leftElbow.x}" 
-          y2="${this.points.leftElbow.y}"
-          stroke="white"
-          stroke-width="8"
-          stroke-linecap="round"
-        />
-        <line id="${this.id}-body"
-          x1="${this.points.shoulders.x}" 
-          y1="${this.points.shoulders.y}"
-          x2="${this.points.hips.x}" 
-          y2="${this.points.hips.y}"
-          stroke="white"
-          stroke-width="8"
-          stroke-linecap="round"
-        />
-        <line id="${this.id}-right-upper-arm"
-          x1="${this.points.shoulders.x}" 
-          y1="${this.points.shoulders.y}"
-          x2="${this.points.rightElbow.x}" 
-          y2="${this.points.rightElbow.y}"
-          stroke="white"
-          stroke-width="8"
-          stroke-linecap="round"
-        />
-        <line id="${this.id}-left-lower-arm"
-          x1="${this.points.leftElbow.x}" 
-          y1="${this.points.leftElbow.y}"
-          x2="${this.points.leftHand.x}" 
-          y2="${this.points.leftHand.y}"
-          stroke="white"
-          stroke-width="8"
-          stroke-linecap="round"
-        />
-        <line id="${this.id}-right-lower-arm"
-          x1="${this.points.rightElbow.x}" 
-          y1="${this.points.rightElbow.y}"
-          x2="${this.points.rightHand.x}" 
-          y2="${this.points.rightHand.y}"
-          stroke="white"
-          stroke-width="8"
-          stroke-linecap="round"
-        />
-        <line id="${this.id}-left-upper-leg"
-          x1="${this.points.hips.x}" 
-          y1="${this.points.hips.y}"
-          x2="${this.points.leftKnee.x}" 
-          y2="${this.points.leftKnee.y}"
-          stroke="white"
-          stroke-width="8"
-          stroke-linecap="round"
-        />
-        <line id="${this.id}-right-upper-leg"
-          x1="${this.points.hips.x}" 
-          y1="${this.points.hips.y}"
-          x2="${this.points.rightKnee.x}" 
-          y2="${this.points.rightKnee.y}"
-          stroke="white"
-          stroke-width="8"
-          stroke-linecap="round"
-        />
-        <line id="${this.id}-left-lower-leg"
-          x1="${this.points.leftKnee.x}" 
-          y1="${this.points.leftKnee.y}"
-          x2="${this.points.leftFoot.x}" 
-          y2="${this.points.leftFoot.y}"
-          stroke="white"
-          stroke-width="8"
-          stroke-linecap="round"
-        />
-        <line id="${this.id}-right-lower-leg"
-          x1="${this.points.rightKnee.x}" 
-          y1="${this.points.rightKnee.y}"
-          x2="${this.points.rightFoot.x}" 
-          y2="${this.points.rightFoot.y}"
-          stroke="white"
-          stroke-width="8"
-          stroke-linecap="round"
-        />
+        ${Object.values(this.limbs).map((limb, index) => `
+          <line
+            id="${this.id}-limb-${index}"
+            x1="${limb.from.x}" 
+            y1="${limb.from.y}"
+            x2="${limb.to.x}" 
+            y2="${limb.to.y}"
+            stroke="white"
+            stroke-width="8"
+            stroke-linecap="round"
+          />
+        `)}
         ${Object.values(this.points).map((point, index) => `
           <circle
-            id="${this.id}-point-${index + 1}"
+            id="${this.id}-point-${index}"
             cx="${point.x}"
             cy="${point.y}"
             r="6"
