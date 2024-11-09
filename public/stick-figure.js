@@ -102,7 +102,10 @@ customElements.define('stick-figure', class StickFigure extends HTMLElement {
         pointElement.setAttribute('active', '')
       })
       pointElement.addEventListener('mousemove', (event) => {
-        // TODO: implement move feature
+        if (pointElement.getAttribute('active') === '') {
+          pointElement.setAttribute('cx', String(event.offsetX))
+          pointElement.setAttribute('cy', String(event.offsetY))
+        }
       })
       pointElement.addEventListener('mouseup', () => {
         pointElement.removeAttribute('active')
