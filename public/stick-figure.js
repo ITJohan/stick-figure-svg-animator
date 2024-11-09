@@ -72,7 +72,7 @@ customElements.define('stick-figure', class StickFigure extends HTMLElement {
         ${Object.values(this.limbs).map((limb, index) => `
           <line
             id="${this.id}-limb-${index}"
-            x1="${limb.from.x}" 
+            x1="${limb.from.x}"
             y1="${limb.from.y}"
             x2="${limb.to.x}" 
             y2="${limb.to.y}"
@@ -92,5 +92,21 @@ customElements.define('stick-figure', class StickFigure extends HTMLElement {
         `).join('')}
       </svg>
     `
+
+    Object.values(this.points).forEach((_point, index) => {
+      const pointElement = this.querySelector(`#${this.id}-point-${index}`)
+      if (pointElement === null) throw new Error("Could not query point element")
+      if (!(pointElement instanceof SVGCircleElement)) throw new Error("Point is of wrong element type")
+      
+      pointElement.addEventListener('mousedown', () => {
+        pointElement.setAttribute('active', '')
+      })
+      pointElement.addEventListener('mousemove', (event) => {
+        // TODO: implement move feature
+      })
+      pointElement.addEventListener('mouseup', () => {
+        pointElement.removeAttribute('active')
+      })
+    })
   }
 })
