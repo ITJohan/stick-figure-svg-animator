@@ -1,115 +1,78 @@
-customElements.define('stick-figure', class StickFigure extends HTMLElement {
-  constructor() {
-    super();
-    this.id = crypto.randomUUID();
-    this.points = {
-      head: {x: 100, y: 16},
-      shoulders: {x: 100, y: 40},
-      leftElbow: {x: 80, y: 80},
-      rightElbow: {x: 120, y: 80},
-      hips: {x: 100, y: 104},
-      leftHand: {x: 80, y: 104}, 
-      rightHand: {x: 120, y: 104},
-      leftKnee: {x: 80, y: 124}, 
-      rightKnee: {x: 120, y: 124},
-      leftFoot: {x: 80, y: 160}, 
-      rightFoot: {x: 120, y: 160},
-    }
-    this.limbs = {
-      neck: {
-        from: this.points.head,
-        to: this.points.shoulders
-      },
-      leftUpperArm: {
-        from: this.points.shoulders,
-        to: this.points.leftElbow
-      },
-      body: {
-        from: this.points.shoulders,
-        to: this.points.hips
-      },
-      rightUpperArm: {
-        from: this.points.shoulders,
-        to: this.points.rightElbow
-      },
-      leftLowerArm: {
-        from: this.points.leftElbow,
-        to: this.points.leftHand
-      },
-      rightLowerArm: {
-        from: this.points.rightElbow,
-        to: this.points.rightHand
-      },
-      leftUpperLeg: {
-        from: this.points.hips,
-        to: this.points.leftKnee,
-      },
-      rightUpperLeg: {
-        from: this.points.hips,
-        to: this.points.rightKnee
-      },
-      leftLowerLeg: {
-        from: this.points.leftKnee,
-        to: this.points.leftFoot
-      },
-      rightLowerLeg: {
-        from: this.points.rightKnee,
-        to: this.points.rightFoot
-      }
-    }
+class Point {
+  constructor(
+    /** @type {string} */ name,
+    /** @type {number} */ x,
+    /** @type {number} */ y,
+  ) {
+    this.name = name;
+    this.x = x;
+    this.y = y;
+    /** @type {Point[]} */
+    this.children = [];
   }
 
-  connectedCallback() {
-    this.innerHTML = `
-      <svg id="${this.id}-svg" width="200" height="200">
-        <circle
-          id="${this.id}-head"
-          cx="${this.points.head.x}"
-          cy="${this.points.head.y}"
-          r="16"
-          fill="white"
-        />
-        ${Object.values(this.limbs).map((limb, index) => `
-          <line
-            id="${this.id}-limb-${index}"
-            x1="${limb.from.x}"
-            y1="${limb.from.y}"
-            x2="${limb.to.x}" 
-            y2="${limb.to.y}"
-            stroke="white"
-            stroke-width="8"
-            stroke-linecap="round"
-          />
-        `)}
-        ${Object.values(this.points).map((point, index) => `
-          <circle
-            id="${this.id}-point-${index}"
-            cx="${point.x}"
-            cy="${point.y}"
-            r="6"
-            fill="red"
-          />
-        `).join('')}
-      </svg>
-    `
-
-    Object.values(this.points).forEach((_point, index) => {
-      const pointElement = this.querySelector(`#${this.id}-point-${index}`)
-      if (pointElement === null) throw new Error("Could not query point element")
-      if (!(pointElement instanceof SVGCircleElement)) throw new Error("Point is of wrong element type")
-      
-      pointElement.addEventListener('mousedown', () => {
-        pointElement.setAttribute('active', '')
-      })
-      pointElement.addEventListener('mousemove', (event) => {
-        if (pointElement.getAttribute('active') === '') {
-          pointElement.setAttribute('cx', String(event.offsetX))
-          pointElement.setAttribute('cy', String(event.offsetY))
-        }
-      })
-      pointElement.addEventListener('mouseup', () => {
-        pointElement.removeAttribute('active')
-      })
-    })
+  addChild(/** @type {Point} */ child) {
+    this.children.push(child);
   }
-})
+}
+
+customElements.define(
+  "stick-figure",
+  class StickFigure extends HTMLElement {
+    constructor() {
+      super();
+      this.id = crypto.randomUUID();
+
+      this.head = new Point("head", 100, 16);
+      const shoulders = new Point("shoulders", 100, 40);
+      const leftElbow = new Point("leftElbow", 80, 80);
+      const rightElbow = new Point("rightElbow", 120, 80);
+      const hips = new Point("hips", 100, 104);
+      const leftHand = new Point("leftHand", 80, 104);
+      const rightHand = new Point("rightHand", 120, 104);
+      const leftKnee = new Point("leftKnee", 80, 124);
+      const rightKnee = new Point("rightKnee", 120, 124);
+      const leftFoot = new Point("leftFoot", 80, 160);
+      const rightFoot = new Point("rightFoot", 120, 160);
+
+      this.head.addChild(shoulders);
+      shoulders.addChild(leftElbow);
+      shoulders.addChild(rightElbow);
+      shoulders.addChild(hips);
+      leftElbow.addChild(leftHand);
+      rightElbow.addChild(rightHand);
+      hips.addChild(leftKnee);
+      hips.addChild(rightKnee);
+      leftKnee.addChild(leftFoot);
+      rightKnee.addChild(rightFoot);
+    }
+
+    connectedCallback() {
+      const svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
+      svg.setAttribute("width", "200");
+      svg.setAttribute("height", "200");
+      this.appendChild(svg);
+
+      const drawLine = (x1, y1, x2, y2) => {
+        const line = document.createElementNS("http://www.w3.org/2000/svg", "line");
+        line.setAttribute("x1", x1);
+        line.setAttribute("y1", y1);
+        line.setAttribute("x2", x2);
+        line.setAttribute("y2", y2);
+        line.setAttribute("stroke", "white");
+        line.setAttribute("stroke-width", "8");
+        line.setAttribute("stroke-linecap", "round");
+        svg.appendChild(line);
+      };
+
+      const drawPoints = (point) => {
+        point.children.forEach(child => {
+          drawLine(point.x, point.y, child.x, child.y);
+          drawPoints(child);
+        });
+      };
+
+      drawPoints(this.head);
+    }
+  },
+);
